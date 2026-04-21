@@ -1218,7 +1218,7 @@ button{font-family:inherit;cursor:pointer;border:0}
 
 // ========== Waitlist forms ==========
 (function(){
-  const WAITLIST_ENDPOINT = window.NAILISTA_WAITLIST_ENDPOINT || '/api/submitWaitlist';
+  const WAITLIST_ENDPOINTS = resolveWaitlistEndpoints();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
   const sourceByFormId = {
     heroForm: 'hero',
@@ -1309,8 +1309,31 @@ button{font-family:inherit;cursor:pointer;border:0}
   }
 
   async function submitWaitlist(payload){
+    let lastFailure = null;
+
+    for(const endpoint of WAITLIST_ENDPOINTS){
+      const result = await submitToEndpoint(endpoint, payload);
+      if(result.success){
+        return result;
+      }
+
+      lastFailure = result;
+      const retryable = result.status === 'network' || result.status === 'not_found' || result.status === 'server_error';
+      if(!retryable){
+        return result;
+      }
+    }
+
+    return lastFailure || {
+      success: false,
+      status: 'invalid',
+      message: 'Could not submit. Please try again.',
+    };
+  }
+
+  async function submitToEndpoint(endpoint, payload){
     try{
-      const response = await fetch(WAITLIST_ENDPOINT, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -1333,6 +1356,22 @@ button{font-family:inherit;cursor:pointer;border:0}
         };
       }
 
+      if(response.status === 404 || response.status === 405){
+        return {
+          success: false,
+          status: 'not_found',
+          message: 'Waitlist endpoint unavailable.',
+        };
+      }
+
+      if(response.status >= 500){
+        return {
+          success: false,
+          status: 'server_error',
+          message: data.message || 'Temporary server error. Please try again.',
+        };
+      }
+
       return {
         success: false,
         status: data.status || 'invalid',
@@ -1341,10 +1380,30 @@ button{font-family:inherit;cursor:pointer;border:0}
     } catch(_error){
       return {
         success: false,
-        status: 'invalid',
+        status: 'network',
         message: 'Network error. Please try again.',
       };
     }
+  }
+
+  function resolveWaitlistEndpoints(){
+    const candidates = [
+      window.NAILISTA_WAITLIST_ENDPOINT,
+      '/api/submitWaitlist',
+      'https://europe-west1-nailista-web.cloudfunctions.net/submitWaitlist',
+      'https://submitwaitlist-zu7lpbl3ra-ew.a.run.app',
+    ];
+
+    const deduped = [];
+    candidates.forEach((item) => {
+      if(typeof item !== 'string') return;
+      const endpoint = item.trim();
+      if(!endpoint) return;
+      if(deduped.includes(endpoint)) return;
+      deduped.push(endpoint);
+    });
+
+    return deduped;
   }
 
   function readUtmParams(){
