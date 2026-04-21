@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Page Not Found - Nailista</title>
+  <style>
+    :root{
+      --cream:#FAF3ED;
+      --ink:#1A1512;
+      --muted:#6B5B50;
+      --tan:#C89878;
+      --line:rgba(26,21,18,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      background:var(--cream);
+      color:var(--ink);
+    }
+    .card{
+      width:min(560px,100%);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:32px;
+      box-shadow:0 10px 30px rgba(60,40,30,.08);
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1.05;
+      font-family:Georgia,serif;
+      font-weight:500;
+    }
+    p{
+      margin:0 0 20px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:10px 16px;
+      font-size:14px;
+      text-decoration:none;
+      border:1px solid var(--line);
+      color:var(--ink);
+      background:#fff;
+    }
+    a.primary{
+      background:var(--ink);
+      color:var(--cream);
+      border-color:transparent;
+    }
+    a:hover{
+      border-color:var(--tan);
+    }
+  </style>
+</head>
+<body>
+  <main class="card" aria-labelledby="not-found-title">
+    <h1 id="not-found-title">That page does not exist.</h1>
+    <p>The link might be outdated, or the URL may be incorrect. You can safely continue from the home page.</p>
+    <div class="actions">
+      <a class="primary" href="/">Go to Home</a>
+      <a href="/privacy">Privacy Policy</a>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nailista — Your nail art, reimagined. Join the waitlist.</title>
+<link rel="icon" href="assets/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================
+   NAILISTA — Waitlist site
+   Warm cream + colorful accent system
+   ========================================= */
+
+:root{
+  --cream: #FAF3ED;
+  --cream-2: #F3E9DE;
+  --cream-3: #EADACB;
+  --ink: #1A1512;
+  --ink-2: #3A2E26;
+  --muted: #6B5B50;
+  --tan: #C89878;
+  --tan-dark: #A8744F;
+  --line: rgba(26,21,18,.08);
+
+  /* accents */
+  --coral: #FF8AA0;
+  --coral-2: #FFB7C5;
+  --mint:  #7FD9B8;
+  --mint-2:#B8ECD8;
+  --lilac: #B89CE8;
+  --lilac-2:#D8C4F2;
+  --sun:   #FFC96B;
+  --sun-2: #FFE0A8;
+  --sky:   #A5D4F0;
+
+  --shadow-sm: 0 2px 6px rgba(60,40,30,.06), 0 8px 24px rgba(60,40,30,.06);
+  --shadow-md: 0 10px 30px rgba(60,40,30,.08), 0 30px 60px rgba(60,40,30,.08);
+  --shadow-lg: 0 30px 60px rgba(60,40,30,.12), 0 60px 120px rgba(60,40,30,.14);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0}
+
+/* ========= Ambient background ========= */
+.ambient{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.blob{
+  position:absolute; border-radius:50%; filter: blur(80px); opacity:.55;
+  animation: drift 18s ease-in-out infinite;
+}
+.blob-coral{width:520px;height:520px;background:var(--coral-2); top:-120px; left:-120px; animation-delay:-2s}
+.blob-mint {width:480px;height:480px;background:var(--mint-2);  top:30%; right:-160px; animation-delay:-6s}
+.blob-lilac{width:560px;height:560px;background:var(--lilac-2); bottom:10%; left:-140px; animation-delay:-10s}
+.blob-sun  {width:420px;height:420px;background:var(--sun-2);   top:55%; right:20%; animation-delay:-14s; opacity:.4}
+.grain{
+  position:absolute; inset:0;
+  background-image: radial-gradient(rgba(26,21,18,.04) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode:multiply;
+  opacity:.5;
+}
+@keyframes drift{
+  0%,100%{transform: translate(0,0) scale(1)}
+  33%{transform: translate(40px,-30px) scale(1.08)}
+  66%{transform: translate(-30px,40px) scale(.96)}
+}
+
+/* ========= Nav ========= */
+.nav{
+  position: sticky; top:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 40px;
+  backdrop-filter: blur(16px) saturate(1.2);
+  background: color-mix(in srgb, var(--cream) 72%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Instrument Serif',serif;font-size:26px;font-weight:500}
+.nav-logo img{width:34px;height:34px;border-radius:10px;object-fit:cover}
+.nav-links{display:flex;gap:30px;font-size:14px;color:var(--ink-2)}
+.nav-links a{position:relative;padding:4px 0;transition:color .2s}
+.nav-links a:hover{color:var(--tan-dark)}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--tan);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{
+  padding:10px 18px; border-radius: 999px; background:var(--ink); color:var(--cream);
+  font-size:14px; font-weight:500; transition: transform .2s, background .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);background:var(--tan-dark)}
+
+@media (max-width: 860px){
+  .nav{padding:14px 20px}
+  .nav-links{display:none}
+}
+
+/* ========= Typography ========= */
+.display{
+  font-family:'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(42px, 6.4vw, 92px);
+  line-height: .98;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+.display em{font-style:italic;color:var(--tan-dark)}
+.gradient-text{
+  background: linear-gradient(100deg, var(--coral) 0%, var(--lilac) 45%, var(--tan-dark) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-style: italic;
+}
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'DM Mono', monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  padding: 8px 14px; border-radius:999px;
+  background: rgba(255,255,255,.6); border:1px solid var(--line);
+  color: var(--ink-2); margin-bottom:22px;
+}
+.eyebrow.dark{background: rgba(26,21,18,.06)}
+.eyebrow.light{background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.2); color:#fff}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 4px color-mix(in srgb, var(--coral) 25%, transparent);animation: pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.lede{
+  font-size: clamp(16px, 1.25vw, 19px);
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.55;
+  margin: 0 0 32px;
+}
+
+/* ========= Hero ========= */
+.hero{position:relative;padding: 40px 40px 80px}
+.hero-inner{
+  display:grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items:center;
+  max-width: 1320px; margin: 0 auto;
+  min-height: 620px;
+}
+.hero-copy{position:relative;z-index:2;padding-top: 10px}
+
+.waitlist-form{
+  display:flex; gap:8px; align-items:center;
+  background: #fff; border-radius: 999px; padding: 6px;
+  box-shadow: var(--shadow-sm); border:1px solid var(--line);
+  max-width: 460px;
+}
+.waitlist-form input{
+  flex:1; border:0; outline:0; background:transparent;
+  padding: 12px 18px; font-size:15px; font-family:inherit; color:var(--ink);
+  min-width: 0;
+}
+.waitlist-form input::placeholder{color: #B0A194}
+.waitlist-form button{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 12px 22px; border-radius:999px;
+  background: var(--ink); color: var(--cream);
+  font-size:14px; font-weight:500;
+  transition: transform .2s, background .2s;
+  white-space: nowrap;
+}
+.waitlist-form button:hover{background: var(--tan-dark); transform: translateY(-1px)}
+.waitlist-form .btn-arrow{transition: transform .25s}
+.waitlist-form button:hover .btn-arrow{transform: translateX(3px)}
+.waitlist-form button[disabled]{
+  opacity: .72;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.hero-meta{
+  margin-top: 22px; display:flex; align-items:center; gap:14px;
+  color: var(--muted); font-size: 14px;
+}
+.avatars{display:flex}
+.avatars span{
+  width: 28px; height: 28px; border-radius:50%;
+  background: var(--c); border:2px solid var(--cream);
+  margin-left: -8px;
+}
+.avatars span:first-child{margin-left:0}
+.meta-text b{color: var(--ink)}
+
+/* ========= Hero scene (3D) ========= */
+.hero-scene{position:relative;height:640px;perspective: 1400px}
+.scene-stage{
+  position:absolute; inset:0;
+  transform-style: preserve-3d;
+  transition: transform .2s ease-out;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.orbit{
+  position:absolute; top:50%; left:50%;
+  border-radius:50%; border: 1.5px dashed rgba(26,21,18,.12);
+  transform: translate(-50%,-50%);
+  animation: spin 40s linear infinite;
+}
+.orbit-1{width: 560px; height: 560px}
+.orbit-2{width: 740px; height: 740px; border-color: rgba(26,21,18,.06); animation-duration: 70s; animation-direction: reverse}
+@keyframes spin{to{transform: translate(-50%,-50%) rotate(360deg)}}
+
+.polish{
+  position:absolute; width: 86px; height: 115px;
+  transform: translate(var(--x), var(--y)) rotate(var(--r));
+  filter: drop-shadow(0 20px 30px rgba(60,40,30,.2));
+  will-change: transform;
+}
+.polish svg{width:100%;height:100%}
+.polish-coral{color: var(--coral)}
+.polish-mint {color: var(--mint)}
+.polish-lilac{color: var(--lilac)}
+.polish-sun  {color: var(--sun)}
+
+.float-a{animation: floatA 7s ease-in-out infinite}
+.float-b{animation: floatB 8.5s ease-in-out infinite}
+.float-c{animation: floatC 9s ease-in-out infinite}
+.float-d{animation: floatD 7.8s ease-in-out infinite}
+
+@keyframes floatA{
+  0%,100%{transform: translate(var(--x), var(--y)) rotate(var(--r))}
+  50%{transform: translate(calc(var(--x) + 8px), calc(var(--y) - 22px)) rotate(calc(var(--r) + 6deg))}
+}
+@keyframes floatB{
+  0%,100%{transform: translate(var(--x), var(--y)) rotate(var(--r))}
+  50%{transform: translate(calc(var(--x) - 10px), calc(var(--y) + 18px)) rotate(calc(var(--r) - 8deg))}
+}
+@keyframes floatC{
+  0%,100%{transform: translate(var(--x), var(--y)) rotate(var(--r))}
+  50%{transform: translate(calc(var(--x) + 14px), calc(var(--y) - 12px)) rotate(calc(var(--r) + 10deg))}
+}
+@keyframes floatD{
+  0%,100%{transform: translate(var(--x), var(--y)) rotate(var(--r))}
+  50%{transform: translate(calc(var(--x) - 6px), calc(var(--y) + 20px)) rotate(calc(var(--r) - 6deg))}
+}
+
+.spark{
+  position:absolute; color: var(--tan-dark); font-size: 24px;
+  transform: translate(var(--x), var(--y));
+  animation: sparkle 3.2s ease-in-out infinite;
+  animation-delay: var(--d);
+  opacity:.7;
+  pointer-events:none;
+}
+.spark.sm{font-size:14px}
+@keyframes sparkle{
+  0%,100%{opacity:0; transform: translate(var(--x), var(--y)) scale(.6) rotate(0deg)}
+  50%{opacity:.9; transform: translate(var(--x), var(--y)) scale(1.1) rotate(180deg)}
+}
+
+.nail-tip{
+  position:absolute; width:40px;height:54px;
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  box-shadow: inset -6px -8px 14px rgba(0,0,0,.15), 0 12px 24px rgba(60,40,30,.18);
+}
+.tip-a{background: linear-gradient(135deg, var(--coral-2), var(--coral)); top: 14%; left: 10%; animation: spinNail 12s linear infinite}
+.tip-b{background: linear-gradient(135deg, var(--mint-2), var(--mint)); bottom: 18%; right: 8%; animation: spinNail 15s linear infinite reverse}
+.tip-c{background: linear-gradient(135deg, var(--sun-2), var(--sun)); top: 8%; right: 18%; animation: spinNail 18s linear infinite}
+@keyframes spinNail{
+  0%{transform: rotate(0deg) translateY(0)}
+  50%{transform: rotate(180deg) translateY(-16px)}
+  100%{transform: rotate(360deg) translateY(0)}
+}
+
+.phone{
+  position: relative; z-index: 5;
+  width: 300px; height: 620px;
+  animation: phoneFloat 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+.phone-frame{
+  position:relative;
+  width:100%; height:100%;
+  border-radius: 48px;
+  background: #1a1512;
+  padding: 8px;
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 0 0 2px rgba(255,255,255,.06);
+  overflow:hidden;
+}
+.phone-frame img{
+  width:100%; height:100%; object-fit:cover; border-radius: 40px;
+  display:block;
+}
+.phone-notch{
+  position:absolute; top:14px; left:50%; transform:translateX(-50%);
+  width: 100px; height: 28px; border-radius: 999px; background:#000; z-index:2;
+}
+.phone-shadow{
+  position:absolute; left:10%; right:10%; bottom:-30px; height:40px;
+  background: radial-gradient(ellipse, rgba(60,40,30,.35), transparent 70%);
+  filter: blur(8px);
+  z-index:-1;
+}
+@keyframes phoneFloat{
+  0%,100%{transform: translateY(0) rotate(-1deg)}
+  50%{transform: translateY(-14px) rotate(1deg)}
+}
+
+@media (max-width: 1040px){
+  .hero-inner{grid-template-columns:1fr; gap:60px}
+  .hero-scene{height: 520px}
+  .phone{width: 260px; height: 540px}
+}
+
+/* ========= Marquee ========= */
+.marquee{
+  margin-top: 60px;
+  padding: 22px 0;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  background: rgba(255,255,255,.35);
+  overflow:hidden;
+}
+.marquee-track{
+  display:flex; align-items:center; gap: 40px; white-space:nowrap;
+  animation: scroll 40s linear infinite;
+  font-family:'Instrument Serif', serif;
+  font-size: 28px; font-style: italic;
+  color: var(--ink);
+}
+.marquee-track .dot2{color: var(--tan-dark); font-size: 14px}
+@keyframes scroll{from{transform: translateX(0)} to{transform: translateX(-50%)}}
+
+/* ========= Features ========= */
+.features{padding: 120px 40px 80px; max-width: 1320px; margin: 0 auto}
+.section-head{margin-bottom: 60px}
+.section-head.center{text-align:center}
+.section-head.center .eyebrow{margin-left:auto;margin-right:auto}
+
+.feature-grid{
+  display:grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.feature{
+  position:relative; overflow:hidden;
+  border-radius: 36px;
+  padding: 44px 44px 0;
+  min-height: 540px;
+  display:flex; flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--line);
+  transition: transform .3s, box-shadow .3s;
+}
+.feature:hover{transform: translateY(-4px); box-shadow: var(--shadow-md)}
+.card-ai     {background: linear-gradient(150deg, #FFE4EC 0%, #FFF0F4 100%)}
+.card-explore{background: linear-gradient(150deg, #E6F5EC 0%, #F3FAF0 100%)}
+.card-home   {background: linear-gradient(150deg, #F1E8FA 0%, #FAF4FF 100%)}
+.card-inbox  {background: linear-gradient(150deg, #FFF3DC 0%, #FFF9EC 100%)}
+
+.feature-copy{padding-bottom:44px; max-width: 520px}
+.feature-num{
+  font-family:'DM Mono', monospace;
+  font-size: 12px; letter-spacing:.1em; color: var(--muted);
+  margin-bottom: 14px;
+}
+.feature h3{
+  font-family:'Instrument Serif', serif; font-weight:400;
+  font-size: 36px; line-height: 1.05; margin: 0 0 14px; letter-spacing: -0.01em;
+}
+.feature p{margin:0; color: var(--ink-2); font-size: 15.5px; line-height: 1.55}
+
+.feature-art{
+  position: relative;
+  height: 280px;
+  margin: 10px -20px 28px;
+}
+.phone-sm{
+  position:absolute; top:0; left: 50%;
+  transform: translateX(-50%) rotate(-6deg);
+  width: 210px; aspect-ratio: 9/19.5;
+  border-radius: 30px; overflow:hidden;
+  background:#1a1512; padding:6px;
+  box-shadow: var(--shadow-md);
+  transition: transform .4s ease;
+}
+.phone-sm img{width:100%;height:100%;object-fit:cover;border-radius:26px}
+.phone-sm.tilt-right{transform: translateX(-50%) rotate(6deg)}
+.feature:hover .phone-sm{transform: translateX(-50%) rotate(0deg) translateY(-8px)}
+
+/* chips that float around AI card */
+.chip{
+  position:absolute; padding:8px 14px; border-radius: 999px;
+  background:#fff; font-size:13px; font-weight:500;
+  border:1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  white-space:nowrap;
+  animation: floatChip 5s ease-in-out infinite;
+}
+.chip-1{top: 30px; left: 30px; animation-delay: 0s; color: var(--tan-dark)}
+.chip-2{top: 10px; right: 30px; animation-delay: .8s; color: var(--lilac)}
+.chip-3{bottom: 30px; left: 20px; animation-delay: 1.6s; color: var(--coral)}
+.chip-4{bottom: 10px; right: 20px; animation-delay: 2.4s; color: var(--mint)}
+@keyframes floatChip{
+  0%,100%{transform: translateY(0)}
+  50%{transform: translateY(-8px)}
+}
+
+.tag-float{
+  position:absolute; padding:8px 14px; border-radius: 12px;
+  font-size:13px; font-weight:600; font-family:'DM Mono', monospace;
+  box-shadow: var(--shadow-sm); animation: floatChip 5s ease-in-out infinite;
+}
+.tag-1{top: 24px; left: 20px; background: var(--mint); color:#0f3d2b; animation-delay: 0s}
+.tag-2{top: 60px; right: 24px; background: var(--coral); color:#4a0e1a; animation-delay: 1s; transform: rotate(4deg)}
+.tag-3{bottom: 30px; left: 30px; background: var(--sun); color:#5a3a00; animation-delay: 2s; transform: rotate(-4deg)}
+
+.heart{
+  position:absolute; color: var(--coral); font-size: 28px;
+  animation: heartPop 3s ease-in-out infinite;
+}
+.heart-1{top: 20px; right: 30px; animation-delay: 0s}
+.heart-2{top: 120px; left: 20px; font-size: 18px; animation-delay: 1s}
+.heart-3{bottom: 20px; right: 60px; font-size: 22px; animation-delay: 2s}
+@keyframes heartPop{
+  0%,100%{transform: scale(1); opacity:.9}
+  50%{transform: scale(1.3); opacity:1}
+}
+
+.bubble{
+  position:absolute; padding:10px 16px; border-radius: 18px 18px 18px 4px;
+  background:#fff; font-size: 13.5px; color: var(--ink);
+  box-shadow: var(--shadow-sm); max-width: 220px;
+  border:1px solid var(--line);
+  animation: floatChip 5s ease-in-out infinite;
+}
+.bubble.alt{background: var(--tan); color:#fff; border-color: var(--tan); border-radius: 18px 18px 4px 18px}
+.bubble-1{top: 20px; left: 16px; animation-delay: 0s}
+.bubble-2{bottom: 20px; right: 16px; animation-delay: 1.2s}
+
+@media (max-width: 960px){
+  .feature-grid{grid-template-columns: 1fr}
+  .features{padding: 80px 20px}
+  .feature{padding: 32px 24px 0; min-height: 480px}
+  .feature h3{font-size: 30px}
+}
+
+/* ========= How It Works ========= */
+.how{
+  padding: 100px 40px;
+  max-width: 1320px; margin: 0 auto;
+}
+.steps{
+  display:grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: start;
+  gap: 10px;
+  margin-top: 40px;
+}
+.step{text-align:center; padding: 0 10px}
+.step-bubble{
+  width: 96px; height: 96px; margin: 0 auto 20px;
+  border-radius: 28px;
+  background: var(--c); color: rgba(26,21,18,.85);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: var(--shadow-sm);
+  animation: bounce 4s ease-in-out infinite;
+  position:relative;
+}
+.step:nth-child(3) .step-bubble{animation-delay: .5s}
+.step:nth-child(5) .step-bubble{animation-delay: 1s}
+.step:nth-child(7) .step-bubble{animation-delay: 1.5s}
+.step-bubble svg{width: 48px; height: 48px}
+@keyframes bounce{
+  0%,100%{transform: translateY(0) rotate(-2deg)}
+  50%{transform: translateY(-10px) rotate(2deg)}
+}
+.step-num{
+  font-family:'DM Mono', monospace; font-size:11px; letter-spacing:.1em;
+  color: var(--muted); margin-bottom: 6px;
+}
+.step h4{
+  font-family:'Instrument Serif', serif; font-weight:400;
+  font-size: 24px; margin: 0 0 8px;
+}
+.step p{margin:0; font-size: 14px; color: var(--muted); line-height: 1.5}
+.connector{color: var(--tan); width: 80px; margin-top: 40px}
+.connector svg{width:100%;height: auto}
+
+@media (max-width: 900px){
+  .steps{grid-template-columns: 1fr 1fr; gap: 40px 20px}
+  .connector{display:none}
+}
+
+/* ========= Audience split ========= */
+.audience{padding: 100px 40px; max-width: 1320px; margin: 0 auto}
+.split{display:grid; grid-template-columns: 1fr 1fr; gap: 24px}
+.split-card{
+  position:relative; overflow:hidden;
+  border-radius: 36px;
+  padding: 48px 44px 56px;
+  min-height: 480px;
+  box-shadow: var(--shadow-sm);
+}
+.for-users{
+  background: linear-gradient(155deg, var(--coral-2) 0%, #FFE5EC 60%, #FFF0F4 100%);
+  color: var(--ink);
+}
+.for-biz{
+  background: linear-gradient(155deg, var(--ink) 0%, #2a2018 60%, #3a2e26 100%);
+  color: var(--cream);
+}
+.split-label{
+  display:inline-block; padding:6px 12px; border-radius:999px;
+  background: rgba(255,255,255,.5); font-size:12px; font-family:'DM Mono', monospace;
+  letter-spacing:.1em; text-transform:uppercase; margin-bottom: 20px;
+}
+.for-biz .split-label{background: rgba(255,255,255,.1); color: var(--cream)}
+.split-card h3{margin: 0 0 28px; font-size: clamp(34px, 4vw, 52px)}
+.for-biz h3 em{color: var(--coral-2)}
+
+.check-list{list-style:none; padding:0; margin: 0 0 32px; position:relative; z-index:2}
+.check-list li{
+  display:flex; align-items:flex-start; gap: 10px;
+  padding: 10px 0; font-size: 15.5px; line-height: 1.45;
+  border-bottom: 1px solid rgba(26,21,18,.08);
+}
+.for-biz .check-list li{border-bottom-color: rgba(255,255,255,.08); color: rgba(250,243,237,.88)}
+.check-list li span{
+  flex-shrink:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  width: 20px; height: 20px; border-radius:50%;
+  background: var(--ink); color:#fff; font-size:11px; margin-top:2px;
+}
+.for-biz .check-list li span{background: var(--coral); color: var(--ink)}
+
+.split-cta{
+  display:inline-flex; align-items:center; gap:6px;
+  padding: 14px 24px; border-radius: 999px;
+  background: var(--ink); color: var(--cream);
+  font-size: 14px; font-weight:500;
+  transition: transform .2s, background .2s;
+  position:relative; z-index:2;
+}
+.split-cta:hover{transform: translateY(-2px)}
+.split-cta.alt{background: var(--coral); color: var(--ink)}
+.split-cta.alt:hover{background: var(--coral-2)}
+
+.split-decor{position:absolute; inset:0; pointer-events:none; z-index:1}
+.mini-polish{
+  position:absolute; width: 50px; height: 70px;
+  background: var(--ink); border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+.mini-polish::before{
+  content:""; position:absolute; top:-16px; left:10px; right:10px; height:20px;
+  background: var(--coral); border-radius: 4px;
+}
+.mp-1{top: 50px; right: 60px; background: var(--lilac); transform: rotate(15deg); animation: floatChip 6s ease-in-out infinite}
+.mp-1::before{background: var(--coral)}
+.mp-2{top: 180px; right: 30px; background: var(--mint); transform: rotate(-10deg); animation: floatChip 7s ease-in-out infinite .6s}
+.mp-2::before{background: var(--sun)}
+.mp-3{bottom: 60px; right: 90px; background: var(--sun); transform: rotate(8deg); animation: floatChip 5.5s ease-in-out infinite 1.2s}
+.mp-3::before{background: var(--coral)}
+
+.ring-circle{
+  position:absolute; width: 280px; height: 280px; border-radius:50%;
+  border: 60px solid rgba(255,255,255,.06);
+  right: -80px; bottom: -80px;
+  animation: spin 30s linear infinite;
+}
+.ring-circle.rc-2{width: 160px; height: 160px; border: 30px solid rgba(255,138,160,.15); right: 40px; top: 40px; animation-direction: reverse}
+
+@media (max-width: 900px){
+  .split{grid-template-columns: 1fr}
+  .audience{padding: 60px 20px}
+}
+
+/* ========= Waitlist card ========= */
+.waitlist{padding: 60px 40px 80px; max-width: 1320px; margin: 0 auto}
+.wait-card{
+  position:relative; overflow:hidden;
+  border-radius: 40px;
+  padding: 80px 60px;
+  background: var(--ink); color: var(--cream);
+  box-shadow: var(--shadow-lg);
+}
+.wait-bg{position:absolute; inset:0; z-index:0; overflow:hidden}
+.wb-blob{position:absolute; width: 600px; height: 600px; border-radius:50%; filter: blur(100px); opacity:.35; animation: drift 20s ease-in-out infinite}
+.wb-1{background: var(--coral); top:-200px; left:-200px}
+.wb-2{background: var(--lilac); top:30%; right:-200px; animation-delay:-7s}
+.wb-3{background: var(--mint); bottom:-200px; left:30%; animation-delay:-14s; opacity:.25}
+
+.wait-inner{position:relative; z-index:1; max-width: 680px; margin: 0 auto; text-align: center}
+.wait-inner .display{color: var(--cream)}
+.wait-sub{color: rgba(250,243,237,.72); font-size: 17px; max-width: 520px; margin: 0 auto 32px}
+.waitlist-form.big{max-width: 520px; margin: 0 auto; padding: 8px}
+.waitlist-form.big input{padding: 16px 22px; font-size: 16px}
+.waitlist-form.big button{padding: 14px 26px; background: var(--coral); color: var(--ink)}
+.waitlist-form.big button:hover{background: var(--coral-2)}
+
+.wait-success{
+  display:none;
+  max-width: 420px; margin: 0 auto; padding: 28px 24px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 24px;
+}
+.wait-success.show{display:block; animation: successIn .6s ease}
+@keyframes successIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.check-circle{
+  width: 56px; height: 56px; margin: 0 auto 14px;
+  border-radius:50%;
+  background: var(--mint); color: var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 28px; font-weight:700;
+  animation: checkPop .6s ease;
+}
+@keyframes checkPop{from{transform: scale(.4)}to{transform: scale(1)}}
+.wait-success h3{font-family:'Instrument Serif', serif; font-weight: 400; font-size: 28px; margin: 0 0 6px}
+.wait-success p{margin:0; color: rgba(250,243,237,.72)}
+
+.wait-perks{
+  margin-top: 48px;
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  position: relative; z-index: 1;
+}
+.perk{
+  padding: 20px; border-radius: 20px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  text-align:left;
+}
+.perk span{font-size:22px; display:block; margin-bottom: 8px}
+.perk b{display:block; font-size: 14px; margin-bottom: 2px}
+.perk small{color: rgba(250,243,237,.6); font-size: 12.5px; line-height:1.4}
+
+@media (max-width: 760px){
+  .wait-card{padding: 50px 28px}
+  .wait-perks{grid-template-columns: 1fr}
+  .waitlist-form{flex-wrap: wrap}
+}
+
+/* ========= FAQ ========= */
+.faq{padding: 100px 40px; max-width: 900px; margin: 0 auto}
+.faq-list{margin-top: 40px}
+.faq details{
+  border-top: 1px solid var(--line);
+  padding: 6px 0;
+}
+.faq details:last-child{border-bottom: 1px solid var(--line)}
+.faq summary{
+  list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 22px 0;
+  cursor: pointer;
+  font-family:'Instrument Serif', serif;
+  font-size: 24px;
+  transition: color .2s;
+}
+.faq summary:hover{color: var(--tan-dark)}
+.faq summary::-webkit-details-marker{display:none}
+.q-plus{
+  font-size: 28px; color: var(--tan-dark); transition: transform .3s;
+  font-family: 'Inter', sans-serif; font-weight: 300;
+}
+.faq details[open] .q-plus{transform: rotate(45deg)}
+.faq p{
+  margin: 0 0 22px; color: var(--muted); font-size: 15.5px; line-height: 1.6;
+  max-width: 720px;
+  animation: faqIn .3s ease;
+}
+@keyframes faqIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========= Footer ========= */
+.footer{
+  margin-top: 40px;
+  padding: 60px 40px 30px;
+  border-top: 1px solid var(--line);
+  background: rgba(255,255,255,.2);
+}
+.footer-top{
+  max-width: 1320px; margin: 0 auto;
+  display:flex; justify-content:space-between; align-items:center; gap: 30px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.footer-brand{display:flex; align-items:center; gap: 14px}
+.footer-brand img{width: 48px; height: 48px; border-radius: 14px; object-fit:cover}
+.fb-name{font-family:'Instrument Serif', serif; font-size: 28px}
+.fb-tag{font-size: 13px; color: var(--muted); margin-top: 2px}
+.waitlist-form.compact{max-width: 360px}
+.waitlist-form.compact input{padding: 10px 14px; font-size: 14px}
+.waitlist-form.compact button{padding: 10px 18px; font-size: 13px}
+.footer-bot{
+  max-width: 1320px; margin: 0 auto;
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top: 26px;
+  font-size: 13px; color: var(--muted);
+}
+.footer-links{display:flex; gap: 22px}
+.footer-links a{transition: color .2s}
+.footer-links a:hover{color: var(--ink)}
+
+@media (max-width: 760px){
+  .footer-top{flex-direction: column; align-items:flex-start}
+  .footer-bot{flex-direction: column; gap: 14px; align-items:flex-start}
+}
+
+/* ========= Contact card ========= */
+.contact{padding: 40px 40px 20px; max-width: 1320px; margin: 0 auto}
+.contact-card{
+  position: relative; overflow: hidden;
+  border-radius: 36px;
+  padding: 60px 60px;
+  background: linear-gradient(150deg, #FFE4EC 0%, #F1E8FA 50%, #E6F5EC 100%);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+}
+.contact-blob{position:absolute; border-radius:50%; filter: blur(70px); opacity:.5; pointer-events:none}
+.cb-a{width: 260px; height: 260px; background: var(--coral); top: -80px; right: 10%}
+.cb-b{width: 220px; height: 220px; background: var(--lilac); bottom: -80px; left: 10%}
+.contact-inner{
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center;
+}
+.contact-side .display{font-size: clamp(34px, 4.5vw, 56px); margin-bottom: 14px}
+.contact-sub{margin: 0; color: var(--ink-2); max-width: 420px; font-size: 15.5px}
+.contact-email{
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 26px 30px;
+  background: var(--ink); color: var(--cream);
+  border-radius: 24px;
+  text-decoration: none;
+  position: relative;
+  transition: transform .3s, box-shadow .3s;
+  box-shadow: var(--shadow-sm);
+}
+.contact-email:hover{transform: translateY(-4px); box-shadow: var(--shadow-lg)}
+.ce-label{font-family:'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(250,243,237,.55)}
+.ce-addr{font-family:'Instrument Serif', serif; font-size: clamp(22px, 2.4vw, 32px); color: var(--coral-2)}
+.ce-arrow{position: absolute; top: 22px; right: 26px; font-size: 22px; color: var(--coral-2); transition: transform .25s}
+.contact-email:hover .ce-arrow{transform: translate(4px,-4px)}
+@media (max-width: 760px){
+  .contact{padding: 30px 20px}
+  .contact-card{padding: 40px 28px; border-radius: 28px}
+  .contact-inner{grid-template-columns: 1fr; gap: 24px}
+}
+
+/* ========= Reveal on scroll ========= */
+.reveal{opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.revealed{opacity:1; transform: translateY(0)}
+
+/* ========= Reduced motion ========= */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Ambient background: floating color blobs + sparkles -->
+<div class="ambient" aria-hidden="true">
+  <div class="blob blob-coral"></div>
+  <div class="blob blob-mint"></div>
+  <div class="blob blob-lilac"></div>
+  <div class="blob blob-sun"></div>
+  <div class="grain"></div>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <a class="nav-logo" href="#top">
+    <img src="assets/logo.jpg" alt="" />
+    <span>Nailista</span>
+  </a>
+  <nav class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#audience">For you</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <a href="#waitlist" class="nav-cta">Join waitlist →</a>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <a class="eyebrow app-store-link" href="https://apps.apple.com/tr/app/nailista/id6761731063?l=tr" target="_blank" rel="noopener">
+        <span class="dot"></span> Available on App Store
+      </a>
+      <h1 class="display">
+        Your <em>dream</em> nails,<br/>
+        designed in <span class="gradient-text">seconds.</span>
+      </h1>
+      <p class="lede">
+        Nailista is the social home for nail art. Generate designs with AI,
+        find local artists, book appointments, and share your looks — all in one beautiful app.
+      </p>
+
+      <form class="waitlist-form" id="heroForm" autocomplete="off">
+        <input type="email" required placeholder="you@email.com" aria-label="Email" />
+        <button type="submit">
+          <span class="btn-text">Join the waitlist</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- 3D scene: floating phone + orbiting polish -->
+    <div class="hero-scene" id="heroScene">
+      <div class="scene-stage">
+        <!-- orbit ring -->
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+
+        <!-- floating nail polish bottles -->
+        <div class="polish polish-coral float-a" style="--x:-220px;--y:-120px;--r:-18deg;color:var(--coral)">
+          <svg viewBox="0 0 120 160"><rect x="42" y="4" width="36" height="46" rx="6" fill="currentColor" opacity=".9"/><rect x="42" y="4" width="36" height="10" rx="5" fill="#fff" opacity=".25"/><rect x="52" y="48" width="16" height="14" fill="currentColor" opacity=".75"/><path d="M28 70 Q 28 62 40 62 L80 62 Q 92 62 92 70 L92 140 Q 92 152 80 152 L40 152 Q 28 152 28 140 Z" fill="currentColor"/><path d="M38 74 Q 38 68 46 68 L50 68 Q 50 100 50 140" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55" fill="none"/><rect x="38" y="92" width="44" height="28" rx="4" fill="#fff" opacity=".3"/></svg>
+        </div>
+        <div class="polish polish-mint float-b" style="--x:240px;--y:-60px;--r:22deg;color:var(--mint)">
+          <svg viewBox="0 0 120 160"><rect x="42" y="4" width="36" height="46" rx="6" fill="currentColor" opacity=".9"/><rect x="42" y="4" width="36" height="10" rx="5" fill="#fff" opacity=".25"/><rect x="52" y="48" width="16" height="14" fill="currentColor" opacity=".75"/><path d="M28 70 Q 28 62 40 62 L80 62 Q 92 62 92 70 L92 140 Q 92 152 80 152 L40 152 Q 28 152 28 140 Z" fill="currentColor"/><path d="M38 74 Q 38 68 46 68 L50 68 Q 50 100 50 140" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55" fill="none"/><rect x="38" y="92" width="44" height="28" rx="4" fill="#fff" opacity=".3"/></svg>
+        </div>
+        <div class="polish polish-lilac float-c" style="--x:-240px;--y:140px;--r:8deg;color:var(--lilac)">
+          <svg viewBox="0 0 120 160"><rect x="42" y="4" width="36" height="46" rx="6" fill="currentColor" opacity=".9"/><rect x="42" y="4" width="36" height="10" rx="5" fill="#fff" opacity=".25"/><rect x="52" y="48" width="16" height="14" fill="currentColor" opacity=".75"/><path d="M28 70 Q 28 62 40 62 L80 62 Q 92 62 92 70 L92 140 Q 92 152 80 152 L40 152 Q 28 152 28 140 Z" fill="currentColor"/><path d="M38 74 Q 38 68 46 68 L50 68 Q 50 100 50 140" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55" fill="none"/><rect x="38" y="92" width="44" height="28" rx="4" fill="#fff" opacity=".3"/></svg>
+        </div>
+        <div class="polish polish-sun float-d" style="--x:250px;--y:170px;--r:-14deg;color:var(--sun)">
+          <svg viewBox="0 0 120 160"><rect x="42" y="4" width="36" height="46" rx="6" fill="currentColor" opacity=".9"/><rect x="42" y="4" width="36" height="10" rx="5" fill="#fff" opacity=".25"/><rect x="52" y="48" width="16" height="14" fill="currentColor" opacity=".75"/><path d="M28 70 Q 28 62 40 62 L80 62 Q 92 62 92 70 L92 140 Q 92 152 80 152 L40 152 Q 28 152 28 140 Z" fill="currentColor"/><path d="M38 74 Q 38 68 46 68 L50 68 Q 50 100 50 140" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55" fill="none"/><rect x="38" y="92" width="44" height="28" rx="4" fill="#fff" opacity=".3"/></svg>
+        </div>
+
+        <!-- sparkles -->
+        <div class="spark" style="--x:-180px;--y:20px;--d:0s">✦</div>
+        <div class="spark" style="--x:180px;--y:50px;--d:.8s">✦</div>
+        <div class="spark" style="--x:-80px;--y:-200px;--d:1.4s">✦</div>
+        <div class="spark" style="--x:120px;--y:-180px;--d:2s">✦</div>
+        <div class="spark sm" style="--x:-260px;--y:-40px;--d:.4s">✦</div>
+        <div class="spark sm" style="--x:260px;--y:-20px;--d:1.2s">✦</div>
+
+        <!-- nail tips orbiting -->
+        <div class="nail-tip tip-a"></div>
+        <div class="nail-tip tip-b"></div>
+        <div class="nail-tip tip-c"></div>
+
+        <!-- phone -->
+        <div class="phone" id="heroPhone">
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <img src="assets/screen-home.png" alt="Nailista app home screen" />
+          </div>
+          <div class="phone-shadow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- marquee -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>AI NAIL DESIGN</span><span class="dot2">●</span>
+      <span>ARTIST DISCOVERY</span><span class="dot2">●</span>
+      <span>BOOK IN-APP</span><span class="dot2">●</span>
+      <span>SHARE YOUR LOOKS</span><span class="dot2">●</span>
+      <span>CHAT WITH SALONS</span><span class="dot2">●</span>
+      <span>AI NAIL DESIGN</span><span class="dot2">●</span>
+      <span>ARTIST DISCOVERY</span><span class="dot2">●</span>
+      <span>BOOK IN-APP</span><span class="dot2">●</span>
+      <span>SHARE YOUR LOOKS</span><span class="dot2">●</span>
+      <span>CHAT WITH SALONS</span><span class="dot2">●</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features">
+  <div class="section-head">
+    <div class="eyebrow dark"><span class="dot"></span> What you get</div>
+    <h2 class="display">Everything your<br/>nails deserve.</h2>
+  </div>
+
+  <div class="feature-grid">
+    <!-- AI Design -->
+    <article class="feature card-ai">
+      <div class="feature-art">
+        <div class="phone-sm tilt">
+          <img src="assets/screen-ai.png" alt="AI design screen" />
+        </div>
+        <div class="chip chip-1">almond</div>
+        <div class="chip chip-2">gold leaf ✨</div>
+        <div class="chip chip-3">french tips</div>
+        <div class="chip chip-4">holographic</div>
+      </div>
+      <div class="feature-copy">
+        <div class="feature-num">01</div>
+        <h3>AI Design Studio</h3>
+        <p>Describe it, and Nailista draws it. From elegant french tips with gold accents to galaxy-inspired holographic nails — your imagination is the only limit.</p>
+      </div>
+    </article>
+
+    <!-- Explore / Discovery -->
+    <article class="feature card-explore">
+      <div class="feature-art">
+        <div class="phone-sm tilt tilt-right">
+          <img src="assets/screen-explore.png" alt="Explore feed" />
+        </div>
+        <div class="tag-float tag-1">#chrome</div>
+        <div class="tag-float tag-2">trending 🔥</div>
+        <div class="tag-float tag-3">near me</div>
+      </div>
+      <div class="feature-copy">
+        <div class="feature-num">02</div>
+        <h3>Discover local artists</h3>
+        <p>Browse trending looks, follow artists near you, and filter by shape, length, finish — find the exact vibe you want and the nail tech who can nail it.</p>
+      </div>
+    </article>
+
+    <!-- Social feed -->
+    <article class="feature card-home">
+      <div class="feature-art">
+        <div class="phone-sm tilt">
+          <img src="assets/screen-home.png" alt="Home feed" />
+        </div>
+        <div class="heart heart-1">♥</div>
+        <div class="heart heart-2">♥</div>
+        <div class="heart heart-3">♥</div>
+      </div>
+      <div class="feature-copy">
+        <div class="feature-num">03</div>
+        <h3>Your nail art community</h3>
+        <p>Follow the artists you love. Save looks you want next. Share your own manicures. It’s the feed the nail world has been waiting for.</p>
+      </div>
+    </article>
+
+    <!-- Inbox / Booking -->
+    <article class="feature card-inbox">
+      <div class="feature-art">
+        <div class="phone-sm tilt tilt-right">
+          <img src="assets/screen-inbox.png" alt="Inbox screen" />
+        </div>
+        <div class="bubble bubble-1">“Can you do chrome on almond?”</div>
+        <div class="bubble bubble-2 alt">“Booked for Sat — see you!”</div>
+      </div>
+      <div class="feature-copy">
+        <div class="feature-num">04</div>
+        <h3>Chat &amp; book, seamlessly</h3>
+        <p>Message artists, request appointments, confirm pricing, see your bookings at a glance. No more DMs lost across three apps.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div class="section-head center">
+    <div class="eyebrow dark"><span class="dot"></span> How it works</div>
+    <h2 class="display">From idea to <em>appointment</em><br/>in four taps.</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-bubble" style="--c:#FFB7C5">
+        <svg viewBox="0 0 48 48"><path d="M24 8 L28 20 L40 24 L28 28 L24 40 L20 28 L8 24 L20 20 Z" fill="currentColor"/></svg>
+      </div>
+      <div class="step-num">01</div>
+      <h4>Imagine it</h4>
+      <p>Type a prompt or upload a photo. Tweak shape, length and finish.</p>
+    </div>
+    <div class="connector"><svg viewBox="0 0 120 20"><path d="M0 10 Q 60 -10 120 10" stroke="currentColor" fill="none" stroke-width="2" stroke-dasharray="4 6"/></svg></div>
+
+    <div class="step">
+      <div class="step-bubble" style="--c:#C8A2E8">
+        <svg viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="6" fill="currentColor"/><circle cx="24" cy="24" r="6" fill="#fff"/></svg>
+      </div>
+      <div class="step-num">02</div>
+      <h4>AI designs it</h4>
+      <p>Nailista generates photorealistic looks in seconds. Save the ones you love.</p>
+    </div>
+    <div class="connector"><svg viewBox="0 0 120 20"><path d="M0 10 Q 60 30 120 10" stroke="currentColor" fill="none" stroke-width="2" stroke-dasharray="4 6"/></svg></div>
+
+    <div class="step">
+      <div class="step-bubble" style="--c:#9DE3C9">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="8" fill="currentColor"/><path d="M8 40 Q 24 28 40 40" fill="currentColor"/></svg>
+      </div>
+      <div class="step-num">03</div>
+      <h4>Find an artist</h4>
+      <p>Browse nearby pros who can recreate your look. Read reviews, see their work.</p>
+    </div>
+    <div class="connector"><svg viewBox="0 0 120 20"><path d="M0 10 Q 60 -10 120 10" stroke="currentColor" fill="none" stroke-width="2" stroke-dasharray="4 6"/></svg></div>
+
+    <div class="step">
+      <div class="step-bubble" style="--c:#FFD27A">
+        <svg viewBox="0 0 48 48"><rect x="8" y="12" width="32" height="28" rx="4" fill="currentColor"/><rect x="8" y="12" width="32" height="8" rx="4" fill="#1a1a1a" opacity=".2"/><circle cx="16" cy="28" r="3" fill="#fff"/><circle cx="24" cy="28" r="3" fill="#fff"/></svg>
+      </div>
+      <div class="step-num">04</div>
+      <h4>Book it</h4>
+      <p>Chat, confirm, and show up. Walk out with the nails you designed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE SPLIT -->
+<section id="audience" class="audience">
+  <div class="split">
+    <div class="split-card for-users">
+      <div class="split-label">For nail lovers</div>
+      <h3 class="display">Be your own<br/>nail designer.</h3>
+      <ul class="check-list">
+        <li><span>✓</span> Generate unlimited AI nail designs</li>
+        <li><span>✓</span> Save and organize your favorite looks</li>
+        <li><span>✓</span> Find artists who match your style</li>
+        <li><span>✓</span> Book appointments without the DMs</li>
+      </ul>
+      <a href="#waitlist" class="split-cta">Join as a user →</a>
+      <div class="split-decor deco-users">
+        <div class="mini-polish mp-1"></div>
+        <div class="mini-polish mp-2"></div>
+        <div class="mini-polish mp-3"></div>
+      </div>
+    </div>
+
+    <div class="split-card for-biz">
+      <div class="split-label">For salons &amp; artists</div>
+      <h3 class="display">Fill your chair.<br/>Grow your craft.</h3>
+      <ul class="check-list">
+        <li><span>✓</span> Showcase your portfolio to a targeted audience</li>
+        <li><span>✓</span> Accept bookings in-app — no more DM chaos</li>
+        <li><span>✓</span> Get discovered by clients in your area</li>
+        <li><span>✓</span> Manage messages &amp; appointments in one inbox</li>
+      </ul>
+      <a href="#waitlist" class="split-cta alt">Join as a business →</a>
+      <div class="split-decor deco-biz">
+        <div class="ring-circle"></div>
+        <div class="ring-circle rc-2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist" class="waitlist">
+  <div class="wait-card">
+    <div class="wait-bg" aria-hidden="true">
+      <div class="wb-blob wb-1"></div>
+      <div class="wb-blob wb-2"></div>
+      <div class="wb-blob wb-3"></div>
+    </div>
+    <div class="wait-inner">
+      <div class="eyebrow light"><span class="dot"></span> Limited early access</div>
+      <h2 class="display">Be first on the list.</h2>
+      <p class="wait-sub">Early members get priority AI design credits, exclusive design drops, and a first look when we launch.</p>
+
+      <form class="waitlist-form big" id="mainForm" autocomplete="off">
+        <input type="email" required placeholder="Enter your email" aria-label="Email" />
+        <button type="submit">
+          <span class="btn-text">Secure my spot</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </form>
+
+      <div class="wait-success" id="waitSuccess">
+        <div class="check-circle">✓</div>
+        <h3>You’re in! 💅</h3>
+        <p>We’ll email you when Nailista opens. Until then — stay gorgeous.</p>
+      </div>
+
+      <div class="wait-perks">
+        <div class="perk"><span>💎</span><b>Priority AI credits</b><small>500 free generations at launch</small></div>
+        <div class="perk"><span>🎨</span><b>Exclusive drops</b><small>Early-only design packs</small></div>
+        <div class="perk"><span>🚀</span><b>First access</b><small>Skip the launch queue</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+  <div class="section-head">
+    <div class="eyebrow dark"><span class="dot"></span> Questions</div>
+    <h2 class="display">Good ones.<br/>Answered.</h2>
+  </div>
+  <div class="faq-list">
+    <details>
+      <summary><span>When does Nailista launch?</span><span class="q-plus">+</span></summary>
+      <p>Nailista is now available on the App Store and ready for users. You can access the app by clicking the “Available on App Store” button.</p>
+    </details>
+    <details>
+      <summary><span>Is Nailista free to use?</span><span class="q-plus">+</span></summary>
+      <p>The core app — social feed, discovery, messaging — is free. AI design generations use credits; waitlist members start with 500 free.</p>
+    </details>
+    <details>
+      <summary><span>How does the AI design work?</span><span class="q-plus">+</span></summary>
+      <p>Tell Nailista what you want (in words or with a reference photo), choose a shape, length and finish, and it renders photoreal nail designs in seconds.</p>
+    </details>
+    <details>
+      <summary><span>Can I book appointments through the app?</span><span class="q-plus">+</span></summary>
+      <p>Yes. Message any artist, send an appointment request, and track everything in your Inbox — no more hopping between DMs, texts and spreadsheets.</p>
+    </details>
+    <details>
+      <summary><span>I own a salon. How do I join?</span><span class="q-plus">+</span></summary>
+      <p>Sign up for the waitlist and select “business” when we reach out. You’ll get a verified profile, portfolio showcase, and booking management tools.</p>
+    </details>
+    <details>
+      <summary><span>Which platforms is Nailista on?</span><span class="q-plus">+</span></summary>
+      <p>Launching on iOS first. Android follows shortly after.</p>
+    </details>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-card">
+    <div class="contact-blob cb-a"></div>
+    <div class="contact-blob cb-b"></div>
+    <div class="contact-inner">
+      <div class="contact-side">
+        <div class="eyebrow dark"><span class="dot"></span> Get in touch</div>
+        <h2 class="display">Questions?<br/>We’re all ears.</h2>
+        <p class="contact-sub">Partnerships, press, salon onboarding, or just a quick hello — drop us a line.</p>
+      </div>
+      <a class="contact-email" href="mailto:maitritechco@gmail.com">
+        <span class="ce-label">Email us</span>
+        <span class="ce-addr">maitritechco@gmail.com</span>
+        <span class="ce-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="assets/logo.jpg" alt="" />
+      <div>
+        <div class="fb-name">Nailista</div>
+        <div class="fb-tag">Your nail art, reimagined.</div>
+      </div>
+    </div>
+    <form class="waitlist-form compact" id="footerForm" autocomplete="off">
+      <input type="email" required placeholder="Get launch updates" aria-label="Email" />
+      <button type="submit">Join →</button>
+    </form>
+  </div>
+  <div class="footer-bot">
+    <div>© 2026 maitri.</div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/nailista_app/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tr.pinterest.com/girlhoodxx/" target="_blank" rel="noopener">Pinterest</a>
+      <a href="/privacy">Privacy</a>
+      <a href="mailto:maitritechco@gmail.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SVG defs: polish bottle -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="polish" viewBox="0 0 120 160">
+      <!-- cap -->
+      <rect x="42" y="4" width="36" height="46" rx="6" fill="currentColor" opacity=".9"/>
+      <rect x="42" y="4" width="36" height="10" rx="5" fill="#fff" opacity=".25"/>
+      <!-- neck -->
+      <rect x="52" y="48" width="16" height="14" fill="currentColor" opacity=".75"/>
+      <!-- bottle -->
+      <path d="M28 70 Q 28 62 40 62 L80 62 Q 92 62 92 70 L92 140 Q 92 152 80 152 L40 152 Q 28 152 28 140 Z" fill="currentColor"/>
+      <!-- gloss -->
+      <path d="M38 74 Q 38 68 46 68 L50 68 Q 50 100 50 140" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55" fill="none"/>
+      <!-- label -->
+      <rect x="38" y="92" width="44" height="28" rx="4" fill="#fff" opacity=".3"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script>
+// ========== Cursor-reactive 3D scene ==========
+(function(){
+  const scene = document.querySelector('#heroScene');
+  const stage = scene?.querySelector('.scene-stage');
+  if(!scene || !stage) return;
+
+  let targetX = 0, targetY = 0, curX = 0, curY = 0;
+  let raf = null;
+
+  function onMove(e){
+    const r = scene.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;   // 0..1
+    const py = (e.clientY - r.top)  / r.height;  // 0..1
+    targetX = (px - 0.5) * 2;   // -1..1
+    targetY = (py - 0.5) * 2;
+    if(!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick(){
+    curX += (targetX - curX) * 0.08;
+    curY += (targetY - curY) * 0.08;
+    stage.style.transform = `rotateX(${(-curY * 6).toFixed(2)}deg) rotateY(${(curX * 8).toFixed(2)}deg)`;
+    // parallax polish bottles
+    stage.querySelectorAll('.polish').forEach((el, i)=>{
+      const depth = (i+1) * 4;
+      el.style.setProperty('--px', `${(curX * depth).toFixed(1)}px`);
+      el.style.setProperty('--py', `${(curY * depth).toFixed(1)}px`);
+    });
+    if(Math.abs(targetX - curX) > 0.001 || Math.abs(targetY - curY) > 0.001){
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+    }
+  }
+  window.addEventListener('mousemove', onMove, {passive: true});
+  window.addEventListener('mouseleave', ()=>{ targetX = 0; targetY = 0; if(!raf) raf = requestAnimationFrame(tick) });
+})();
+
+// ========== Waitlist forms ==========
+(function(){
+  const WAITLIST_ENDPOINT = window.NAILISTA_WAITLIST_ENDPOINT || '/api/submitWaitlist';
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  const sourceByFormId = {
+    heroForm: 'hero',
+    mainForm: 'main',
+    footerForm: 'footer',
+  };
+
+  const forms = document.querySelectorAll('.waitlist-form');
+  const success = document.getElementById('waitSuccess');
+  const mainForm = document.getElementById('mainForm');
+  const mainSuccessTitle = success?.querySelector('h3');
+  const mainSuccessBody = success?.querySelector('p');
+  const utm = readUtmParams();
+
+  forms.forEach(form => {
+    const input = form.querySelector('input[type="email"]');
+    const button = form.querySelector('button');
+    const buttonTextNode = form.querySelector('button .btn-text') || button;
+    const defaultButtonText = buttonTextNode?.textContent || '';
+
+    if(!input || !button || !buttonTextNode) return;
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = (input?.value || '').trim();
+      if(!email || !emailRegex.test(email)){
+        showInlineMessage(buttonTextNode, defaultButtonText, 'Enter a valid email.');
+        return;
+      }
+
+      setSubmittingState(button, buttonTextNode, true);
+
+      const result = await submitWaitlist({
+        email,
+        sourceForm: sourceByFormId[form.id] || 'hero',
+        utm,
+        referrer: document.referrer || undefined,
+      });
+
+      setSubmittingState(button, buttonTextNode, false, defaultButtonText);
+
+      if(!result.success){
+        showInlineMessage(buttonTextNode, defaultButtonText, result.message || 'Try again in a moment.');
+        return;
+      }
+
+      if(result.status === 'created'){
+        burstConfetti(form);
+      }
+
+      if(form === mainForm){
+        form.style.display = 'none';
+        if(success){
+          if(result.status === 'already_exists'){
+            if(mainSuccessTitle) mainSuccessTitle.textContent = 'Already on the list.';
+            if(mainSuccessBody) mainSuccessBody.textContent = 'This email is already registered. We will notify you at launch.';
+          } else {
+            if(mainSuccessTitle) mainSuccessTitle.textContent = "You're in!";
+            if(mainSuccessBody) mainSuccessBody.textContent = 'We will email you when Nailista opens. Until then, stay gorgeous.';
+          }
+          success.classList.add('show');
+        }
+      } else {
+        input.value = '';
+        if(result.status === 'already_exists'){
+          showInlineMessage(buttonTextNode, defaultButtonText, 'Already on waitlist ✓');
+        } else {
+          showInlineMessage(buttonTextNode, defaultButtonText, "You're in! ✓");
+        }
+      }
+    });
+  });
+
+  function setSubmittingState(button, textNode, isSubmitting, fallbackText){
+    button.disabled = isSubmitting;
+    if(isSubmitting){
+      textNode.textContent = 'Submitting...';
+      return;
+    }
+    if(fallbackText){
+      textNode.textContent = fallbackText;
+    }
+  }
+
+  function showInlineMessage(textNode, originalText, message){
+    textNode.textContent = message;
+    setTimeout(()=>{ textNode.textContent = originalText; }, 2600);
+  }
+
+  async function submitWaitlist(payload){
+    try{
+      const response = await fetch(WAITLIST_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if(response.ok){
+        return {
+          success: true,
+          status: data.status || 'created',
+          message: data.message || 'You are on the waitlist.',
+        };
+      }
+
+      if(response.status === 429){
+        return {
+          success: false,
+          status: 'rate_limited',
+          message: data.message || 'Too many requests, wait a minute and try again.',
+        };
+      }
+
+      return {
+        success: false,
+        status: data.status || 'invalid',
+        message: data.message || 'Could not submit. Please try again.',
+      };
+    } catch(_error){
+      return {
+        success: false,
+        status: 'invalid',
+        message: 'Network error. Please try again.',
+      };
+    }
+  }
+
+  function readUtmParams(){
+    const keys = ['source', 'medium', 'campaign', 'term', 'content'];
+    const params = new URLSearchParams(window.location.search);
+    const payload = {};
+
+    keys.forEach(key => {
+      const value = params.get(`utm_${key}`);
+      if(value){
+        payload[key] = value;
+      }
+    });
+
+    return Object.keys(payload).length ? payload : undefined;
+  }
+})();
+
+// ========== Confetti ==========
+function burstConfetti(origin){
+  const rect = origin.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const colors = ['#FF8AA0', '#C8A2E8', '#7FD9B8', '#FFC96B', '#A5D4F0', '#C89878'];
+  const n = 28;
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;z-index:9999;pointer-events:none';
+  document.body.appendChild(container);
+
+  for(let i=0;i<n;i++){
+    const p = document.createElement('div');
+    const size = 6 + Math.random()*8;
+    const ang = Math.random() * Math.PI * 2;
+    const vel = 90 + Math.random()*160;
+    const dx = Math.cos(ang) * vel;
+    const dy = Math.sin(ang) * vel - 40;
+    const rot = (Math.random() * 540 - 270);
+    p.style.cssText = `
+      position:absolute; left:${cx}px; top:${cy}px;
+      width:${size}px; height:${size*1.6}px;
+      background:${colors[i%colors.length]};
+      border-radius:2px;
+      transform: translate(-50%,-50%);
+      transition: transform 1.1s cubic-bezier(.2,.7,.3,1), opacity 1.1s;
+      opacity:1;
+    `;
+    container.appendChild(p);
+    requestAnimationFrame(()=>{
+      p.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy + 160}px)) rotate(${rot}deg)`;
+      p.style.opacity = '0';
+    });
+  }
+  setTimeout(()=>container.remove(), 1400);
+}
+
+// ========== Scroll reveals ==========
+(function(){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('revealed');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.12});
+  document.querySelectorAll('.feature, .step, .split-card, .wait-card, .faq details').forEach(el=>{
+    el.classList.add('reveal');
+    io.observe(el);
+  });
+})();
+
+// ========== Anchor link guard ==========
+(function(){
+  const nav = document.querySelector('.nav');
+
+  function navOffset(){
+    return (nav?.offsetHeight || 0) + 12;
+  }
+
+  function findTarget(hash){
+    if(!hash || hash === '#') return null;
+    try{
+      return document.querySelector(decodeURIComponent(hash));
+    } catch(_error){
+      return null;
+    }
+  }
+
+  function scrollToHash(hash, behavior = 'smooth'){
+    const target = findTarget(hash);
+    if(!target) return false;
+    const top = window.scrollY + target.getBoundingClientRect().top - navOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior });
+    return true;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', event => {
+      const hash = link.getAttribute('href');
+      if(!hash || hash === '#') return;
+
+      event.preventDefault();
+      const ok = scrollToHash(hash);
+      if(ok){
+        history.pushState(null, '', hash);
+      } else {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  if(window.location.hash){
+    window.addEventListener('load', () => {
+      const ok = scrollToHash(window.location.hash, 'auto');
+      if(!ok){
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }, { once: true });
+  }
+
+  window.addEventListener('hashchange', () => {
+    if(!window.location.hash) return;
+    const ok = scrollToHash(window.location.hash, 'auto');
+    if(!ok){
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  });
+})();
+
+</script>
+</body>
+</html>

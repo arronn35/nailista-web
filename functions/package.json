@@ -1,0 +1,17 @@
+{
+  "name": "nailista-waitlist-functions",
+  "private": true,
+  "main": "src/index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "serve": "firebase emulators:start --only functions,firestore,hosting",
+    "deploy": "firebase deploy --only functions,hosting,firestore:rules,firestore:indexes"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^5.1.1"
+  }
+}

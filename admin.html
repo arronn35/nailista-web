@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nailista Waitlist Admin</title>
+  <style>
+    :root{
+      --cream:#FAF3ED;
+      --ink:#1A1512;
+      --ink-2:#3A2E26;
+      --muted:#6B5B50;
+      --line:rgba(26,21,18,.1);
+      --tan:#C89878;
+      --tan-dark:#A8744F;
+      --ok:#0f7b59;
+      --error:#b33131;
+      --card:#fff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,sans-serif;
+      background:var(--cream);
+      color:var(--ink);
+      line-height:1.45;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:28px 16px 32px;
+    }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0;
+      font-size:30px;
+      letter-spacing:-0.01em;
+    }
+    .top a{
+      color:var(--tan-dark);
+      text-decoration:none;
+      font-size:14px;
+    }
+    .grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns:repeat(12,minmax(0,1fr));
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 8px 22px rgba(20,10,5,.05);
+    }
+    .token-card{grid-column:span 12}
+    .filters-card{grid-column:span 12}
+    .summary-card{grid-column:span 12}
+    .table-card{grid-column:span 12;overflow:auto}
+    @media (min-width:900px){
+      .token-card{grid-column:span 5}
+      .filters-card{grid-column:span 7}
+    }
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    input,select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      background:#fff;
+      font:inherit;
+      color:var(--ink-2);
+    }
+    .rows{
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(12,minmax(0,1fr));
+    }
+    .c12{grid-column:span 12}
+    .c6{grid-column:span 12}
+    .c4{grid-column:span 12}
+    .c3{grid-column:span 12}
+    @media (min-width:800px){
+      .c6{grid-column:span 6}
+      .c4{grid-column:span 4}
+      .c3{grid-column:span 3}
+    }
+    .btns{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      border-radius:999px;
+      padding:10px 14px;
+      background:var(--ink);
+      color:var(--cream);
+      font:inherit;
+      cursor:pointer;
+    }
+    button.alt{
+      background:#fff;
+      color:var(--ink);
+      border:1px solid var(--line);
+    }
+    button:disabled{opacity:.65;cursor:not-allowed}
+    .status{
+      margin-top:10px;
+      font-size:13px;
+      min-height:18px;
+      color:var(--muted);
+    }
+    .status.ok{color:var(--ok)}
+    .status.err{color:var(--error)}
+    .stats{
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    .stat{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:#fff;
+    }
+    .stat b{display:block;font-size:20px;line-height:1}
+    .stat span{font-size:12px;color:var(--muted)}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:980px;
+      font-size:13px;
+    }
+    th,td{
+      text-align:left;
+      border-bottom:1px solid var(--line);
+      padding:10px 8px;
+      vertical-align:top;
+    }
+    th{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:.02em;
+    }
+    .mono{
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:12px;
+      color:var(--ink-2);
+    }
+    .empty{
+      padding:18px 8px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>Waitlist Admin Panel</h1>
+      <a href="/">Back to site</a>
+    </div>
+
+    <div class="grid">
+      <section class="card token-card">
+        <div class="rows">
+          <div class="c12">
+            <label for="apiEndpointInput">Admin API URL</label>
+            <input id="apiEndpointInput" type="text" autocomplete="off" />
+          </div>
+          <div class="c12">
+            <label for="tokenInput">Admin Token</label>
+            <input id="tokenInput" type="password" placeholder="Paste WAITLIST_ADMIN_TOKEN" autocomplete="off" />
+          </div>
+        </div>
+        <div class="btns">
+          <button id="saveTokenBtn" type="button">Save token</button>
+          <button id="clearTokenBtn" type="button" class="alt">Clear token</button>
+        </div>
+        <div class="status" id="tokenStatus"></div>
+      </section>
+
+      <section class="card filters-card">
+        <div class="rows">
+          <div class="c6">
+            <label for="emailQuery">Email Contains</label>
+            <input id="emailQuery" type="text" placeholder="example@domain.com" />
+          </div>
+          <div class="c3">
+            <label for="sourceForm">Source Form</label>
+            <select id="sourceForm">
+              <option value="">All</option>
+              <option value="hero">hero</option>
+              <option value="main">main</option>
+              <option value="footer">footer</option>
+            </select>
+          </div>
+          <div class="c3">
+            <label for="limitInput">Limit</label>
+            <input id="limitInput" type="number" min="1" max="200" value="50" />
+          </div>
+          <div class="c3">
+            <label for="fromDate">From Date</label>
+            <input id="fromDate" type="datetime-local" />
+          </div>
+          <div class="c3">
+            <label for="toDate">To Date</label>
+            <input id="toDate" type="datetime-local" />
+          </div>
+        </div>
+        <div class="btns">
+          <button id="runBtn" type="button">Apply Filters</button>
+          <button id="resetBtn" type="button" class="alt">Reset</button>
+          <button id="csvBtn" type="button" class="alt">Export CSV</button>
+        </div>
+        <div class="status" id="resultStatus"></div>
+      </section>
+
+      <section class="card summary-card">
+        <div class="stats">
+          <div class="stat"><b id="countTotal">0</b><span>Total rows</span></div>
+          <div class="stat"><b id="countHero">0</b><span>hero</span></div>
+          <div class="stat"><b id="countMain">0</b><span>main</span></div>
+          <div class="stat"><b id="countFooter">0</b><span>footer</span></div>
+        </div>
+      </section>
+
+      <section class="card table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Source</th>
+              <th>Submit Count</th>
+              <th>Created At</th>
+              <th>Last Submitted</th>
+              <th>UTM</th>
+              <th>Referrer</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td class="empty" colspan="7">No data yet.</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const TOKEN_KEY = 'nailista_admin_token';
+      const ENDPOINT_KEY = 'nailista_admin_endpoint';
+      const DEFAULT_ENDPOINT = 'https://listwaitlistentries-zu7lpbl3ra-ew.a.run.app';
+      const apiEndpointInput = document.getElementById('apiEndpointInput');
+      const tokenInput = document.getElementById('tokenInput');
+      const tokenStatus = document.getElementById('tokenStatus');
+      const resultStatus = document.getElementById('resultStatus');
+      const runBtn = document.getElementById('runBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const csvBtn = document.getElementById('csvBtn');
+      const saveTokenBtn = document.getElementById('saveTokenBtn');
+      const clearTokenBtn = document.getElementById('clearTokenBtn');
+      const sourceFormInput = document.getElementById('sourceForm');
+      const emailQueryInput = document.getElementById('emailQuery');
+      const fromDateInput = document.getElementById('fromDate');
+      const toDateInput = document.getElementById('toDate');
+      const limitInput = document.getElementById('limitInput');
+      const tableBody = document.getElementById('tableBody');
+
+      const countTotal = document.getElementById('countTotal');
+      const countHero = document.getElementById('countHero');
+      const countMain = document.getElementById('countMain');
+      const countFooter = document.getElementById('countFooter');
+
+      let currentRows = [];
+
+      restoreToken();
+      wireEvents();
+
+      function wireEvents(){
+        runBtn.addEventListener('click', fetchRows);
+        resetBtn.addEventListener('click', resetFilters);
+        csvBtn.addEventListener('click', exportCsv);
+
+        saveTokenBtn.addEventListener('click', () => {
+          const endpoint = apiEndpointInput.value.trim();
+          const token = tokenInput.value.trim();
+          if(!endpoint){
+            setTokenStatus('API URL cannot be empty.', false);
+            return;
+          }
+          if(!token){
+            setTokenStatus('Token cannot be empty.', false);
+            return;
+          }
+          localStorage.setItem(ENDPOINT_KEY, endpoint);
+          localStorage.setItem(TOKEN_KEY, token);
+          setTokenStatus('API URL and token saved in browser storage.', true);
+        });
+
+        clearTokenBtn.addEventListener('click', () => {
+          localStorage.removeItem(ENDPOINT_KEY);
+          localStorage.removeItem(TOKEN_KEY);
+          apiEndpointInput.value = DEFAULT_ENDPOINT;
+          tokenInput.value = '';
+          setTokenStatus('API URL and token removed.', true);
+        });
+      }
+
+      function restoreToken(){
+        const endpoint = localStorage.getItem(ENDPOINT_KEY) || DEFAULT_ENDPOINT;
+        apiEndpointInput.value = endpoint;
+
+        const token = localStorage.getItem(TOKEN_KEY) || '';
+        tokenInput.value = token;
+        if(token){
+          setTokenStatus('Stored API URL/token loaded.', true);
+        }
+      }
+
+      function setTokenStatus(message, ok){
+        tokenStatus.textContent = message || '';
+        tokenStatus.className = ok ? 'status ok' : 'status err';
+      }
+
+      function setResultStatus(message, ok){
+        resultStatus.textContent = message || '';
+        if(!message){
+          resultStatus.className = 'status';
+          return;
+        }
+        resultStatus.className = ok ? 'status ok' : 'status err';
+      }
+
+      function resetFilters(){
+        sourceFormInput.value = '';
+        emailQueryInput.value = '';
+        fromDateInput.value = '';
+        toDateInput.value = '';
+        limitInput.value = '50';
+        setResultStatus('', true);
+      }
+
+      function updateSummary(rows){
+        const sourceCounts = { hero: 0, main: 0, footer: 0 };
+        rows.forEach((row) => {
+          if(sourceCounts[row.sourceForm] !== undefined){
+            sourceCounts[row.sourceForm] += 1;
+          }
+        });
+        countTotal.textContent = String(rows.length);
+        countHero.textContent = String(sourceCounts.hero);
+        countMain.textContent = String(sourceCounts.main);
+        countFooter.textContent = String(sourceCounts.footer);
+      }
+
+      function renderRows(rows){
+        if(!rows.length){
+          tableBody.innerHTML = '<tr><td class="empty" colspan="7">No results for current filters.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = rows.map((row) => {
+          return '<tr>' +
+            '<td class="mono">' + escapeHtml(row.email || '-') + '</td>' +
+            '<td>' + escapeHtml(row.sourceForm || '-') + '</td>' +
+            '<td>' + escapeHtml(String(row.submitCount || 0)) + '</td>' +
+            '<td>' + escapeHtml(formatDate(row.createdAt)) + '</td>' +
+            '<td>' + escapeHtml(formatDate(row.lastSubmittedAt)) + '</td>' +
+            '<td class="mono">' + escapeHtml(formatUtm(row.utm)) + '</td>' +
+            '<td class="mono">' + escapeHtml(row.referrer || '-') + '</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      function formatDate(value){
+        if(!value) return '-';
+        const d = new Date(value);
+        if(Number.isNaN(d.getTime())) return String(value);
+        return d.toLocaleString();
+      }
+
+      function formatUtm(utm){
+        if(!utm || typeof utm !== 'object') return '-';
+        const out = [];
+        ['source','medium','campaign','term','content'].forEach((key) => {
+          if(utm[key]) out.push(key + ':' + utm[key]);
+        });
+        return out.length ? out.join(' | ') : '-';
+      }
+
+      function escapeHtml(text){
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function toIsoOrNull(value){
+        if(!value) return null;
+        const date = new Date(value);
+        if(Number.isNaN(date.getTime())) return null;
+        return date.toISOString();
+      }
+
+      function payloadFromInputs(){
+        return {
+          sourceForm: sourceFormInput.value || undefined,
+          emailQuery: emailQueryInput.value.trim() || undefined,
+          fromDate: toIsoOrNull(fromDateInput.value),
+          toDate: toIsoOrNull(toDateInput.value),
+          limit: Number(limitInput.value || 50),
+        };
+      }
+
+      async function fetchRows(){
+        const endpoint = (apiEndpointInput.value || localStorage.getItem(ENDPOINT_KEY) || DEFAULT_ENDPOINT).trim();
+        const token = (tokenInput.value || localStorage.getItem(TOKEN_KEY) || '').trim();
+        if(!endpoint){
+          setResultStatus('Please provide the admin API URL first.', false);
+          return;
+        }
+        if(!token){
+          setResultStatus('Please provide and save an admin token first.', false);
+          return;
+        }
+
+        runBtn.disabled = true;
+        setResultStatus('Loading waitlist entries...', true);
+
+        try{
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(payloadFromInputs()),
+          });
+
+          const data = await response.json().catch(() => ({}));
+          if(!response.ok){
+            const message = data.message || ('Request failed with status ' + response.status);
+            setResultStatus(message, false);
+            return;
+          }
+
+          currentRows = Array.isArray(data.entries) ? data.entries : [];
+          renderRows(currentRows);
+          updateSummary(currentRows);
+          setResultStatus('Loaded ' + currentRows.length + ' row(s).', true);
+        } catch(_error){
+          setResultStatus('Network error while loading rows.', false);
+        } finally{
+          runBtn.disabled = false;
+        }
+      }
+
+      function exportCsv(){
+        if(!currentRows.length){
+          setResultStatus('No rows to export.', false);
+          return;
+        }
+
+        const headers = [
+          'email',
+          'sourceForm',
+          'submitCount',
+          'createdAt',
+          'lastSubmittedAt',
+          'utm_source',
+          'utm_medium',
+          'utm_campaign',
+          'utm_term',
+          'utm_content',
+          'referrer',
+          'userAgent',
+        ];
+
+        const lines = [headers.join(',')];
+        currentRows.forEach((row) => {
+          const utm = row.utm || {};
+          const values = [
+            row.email || '',
+            row.sourceForm || '',
+            String(row.submitCount || 0),
+            row.createdAt || '',
+            row.lastSubmittedAt || '',
+            utm.source || '',
+            utm.medium || '',
+            utm.campaign || '',
+            utm.term || '',
+            utm.content || '',
+            row.referrer || '',
+            row.userAgent || '',
+          ];
+          lines.push(values.map(csvEscape).join(','));
+        });
+
+        const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'waitlist-export.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function csvEscape(value){
+        const raw = String(value || '');
+        if(/[",\n]/.test(raw)){
+          return '"' + raw.replace(/"/g, '""') + '"';
+        }
+        return raw;
+      }
+    })();
+  </script>
+</body>
+</html>

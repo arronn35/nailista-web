@@ -1,0 +1,68 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default"
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "site": "nailista-web",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "firestore.rules",
+      "firestore.indexes.json",
+      ".gitignore",
+      "**/.*",
+      "**/node_modules/**",
+      "functions/**"
+    ],
+    "redirects": [
+      {
+        "source": "/privacy",
+        "destination": "/privacy.html",
+        "type": 301
+      },
+      {
+        "source": "/privacy/",
+        "destination": "/privacy.html",
+        "type": 301
+      },
+      {
+        "source": "/admin",
+        "destination": "/admin.html",
+        "type": 301
+      },
+      {
+        "source": "/admin/",
+        "destination": "/admin.html",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/submitWaitlist",
+        "function": {
+          "functionId": "submitWaitlist",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/api/admin/waitlist",
+        "function": {
+          "functionId": "listWaitlistEntries",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/404.html"
+      }
+    ]
+  }
+}
